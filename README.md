@@ -1,166 +1,65 @@
-Advanced UVM-Inspired Verification Environment for Arithmetic Logic Shift Unit (ALU)
+# Advanced UVM-Inspired ALU Verification Environment
 
-A complete SystemVerilog class-based constrained-random verification environment for a parameterized Arithmetic Logic Shift Unit (ALU), developed using UVM-inspired verification methodology and advanced verification techniques including functional coverage, assertion-based verification (SVA), golden reference modeling, and self-checking scoreboarding.
+A complete **class-based constrained-random verification environment** for a pipelined Arithmetic Logic Shift Unit (ALU) developed in SystemVerilog.
 
-Project Overview
+## Overview
 
-This project focuses on building a scalable and reusable verification environment for verifying an ALU supporting multiple arithmetic, logical, shift, rotate, reduction, and bypass operations.
+This project demonstrates a robust verification architecture for a complex ALU supporting multiple operations including addition, multiplication, logical operations, shift, rotate, reduction, bypass, and invalid cases. The environment follows **UVM-inspired** methodology using object-oriented SystemVerilog.
 
-The environment was designed following modern ASIC/RTL verification methodologies using:
+### Key Features
 
-Object-Oriented Programming (OOP)
-Transaction-based communication
-Mailboxes
-Virtual Interfaces
-Functional Coverage
-Constrained Random Verification (CRV)
-SystemVerilog Assertions (SVA)
-Features
-Class-based reusable verification architecture
-Constrained-random stimulus generation
-Self-checking scoreboard with golden reference model
-Functional and cross coverage implementation
-Assertion-Based Verification (ABV) using SVA
-Coverage-driven verification methodology
-Protocol and corner-case checking
-Transaction-level communication using mailboxes
-Virtual interface-based DUT connectivity
-Shift/Rotate directional verification
-Reduction operation verification
-Invalid operation detection and checking
-Bypass path verification
-Reset verification
-Fully automated simulation flow
-ALU Supported Operations
-Operation	Opcode
-OR	3'b000
-XOR	3'b001
-ADD	3'b010
-MULT	3'b011
-SHIFT	3'b100
-ROTATE	3'b101
+- **UVM-style Architecture**: Generator, Driver, Monitor, Scoreboard, Coverage, and Environment classes
+- **Constrained Random Stimulus** with intelligent constraints
+- **Self-checking Scoreboard** with golden reference model
+- **Comprehensive Functional Coverage** with cross-coverage
+- **SystemVerilog Assertions (SVA)** for protocol and corner case checking
+- **Mailbox-based Transaction Communication**
+- **Virtual Interfaces** with proper modport handling
+- **2-cycle pipeline latency** handling
 
-Invalid Opcodes:
-
-3'b110
-3'b111
-Verification Architecture
-Generator  --->  Driver  --->  DUT
-                     |          |
-                     |          |
-                 Scoreboard <--- Monitor
-                     |
-                 Coverage
-                     |
-                    SVA
-Verification Components
-Generator
-Generates randomized transactions
-Implements weighted constrained randomization
-Sends transactions to Driver using mailboxes
-Driver
-Drives randomized transactions to DUT through virtual interface
-Synchronizes transactions with DUT clock
-Monitor
-Samples DUT inputs/outputs
-Sends sampled transactions to Scoreboard
-Sends sampled transactions to Coverage collector
-Scoreboard
-Implements golden reference model
-Compares expected vs actual DUT outputs
-Reports PASS/FAIL statistics
-Coverage
-Implements:
-Covergroups
-Coverpoints
-Cross Coverage
-Tracks verification completeness
-Assertions (SVA)
-
-Implemented assertions for:
-
-Arithmetic operations
-Logical operations
-Shift/Rotate operations
-Reduction operations
-Reset behavior
-Bypass behavior
-Invalid operation handling
-Protocol timing validation
-Environment
-Connects all verification components
-Instantiates mailboxes
-Controls parallel execution using fork...join
-Functional Coverage
-
-Implemented advanced functional coverage including:
-
-Operand boundary values
-Overflow conditions
-Shift directions
-Rotate directions
-Reduction operations
-Invalid operation scenarios
-Cross coverage between:
-Opcode
-Operands
-Direction
-Reduction signals
-Technologies Used
-SystemVerilog
-QuestaSim
-Constrained Random Verification (CRV)
-Functional Coverage
-SystemVerilog Assertions (SVA)
-Mailboxes
-Virtual Interfaces
-Object-Oriented Programming (OOP)
-Simulation & Verification Results
-Achieved 100% code coverage
-Achieved high functional coverage
-Successfully verified:
-Arithmetic operations
-Logical operations
-Shift/Rotate functionality
-Reduction operations
-Bypass logic
-Invalid opcode handling
-Reset behavior
-Corner cases
-Challenges Solved
-Debugged complex virtual interface binding issues in QuestaSim
-Solved elaboration and interface resolution problems
-Handled synchronization between monitor and scoreboard
-Built scalable reusable verification infrastructure
-File Structure
-├── ALU.sv
-├── Interface.sv
-├── Transaction.sv
+## Project Structure
+ALU_Verification/
+├── ALU.sv                  # Design Under Test (DUT)
+├── Interface.sv            # ALU Interface with modports
+├── Transction.sv           # Transaction class
 ├── Generator.sv
 ├── Driver.sv
 ├── Monitor.sv
 ├── Score_Board.sv
 ├── Coverage.sv
-├── SVA.sv
-├── Environment.sv
-├── TOP.sv
-├── TB.sv
-└── README.md
-Running the Simulation
-Compile
-vlog *.sv
-Simulate
-vsim work.TOP
-run -all
-Future Improvements
-Full UVM migration
-Coverage closure automation
-Regression scripting
-CI/CD integration
-Parameterized ALU scalability enhancements
-Formal verification integration
-Author
+├── Enviroment.sv
+├── SVA.sv                  # SystemVerilog Assertions
+├── TB.sv                   # Testbench
+├── TOP.sv                  # Top module
+└── Packages/               # All packages
+text## Verification Achievements
 
-Ziad Ahmed
-Digital IC / ASIC Verification Engineer
-Passionate about RTL Design, Functional Verification, ASIC Flow, and Advanced Verification Methodologies
+- **100% Code Coverage**
+- High Functional Coverage (coverpoints + cross coverage for overflow, reduction, shift/rotate, etc.)
+- Robust verification of corner cases and invalid operations
+- Proper handling of synchronous reset and 2-cycle output latency
+
+## Tools Used
+
+- **Simulator**: QuestaSim
+- **Language**: SystemVerilog (IEEE 1800)
+- **Methodology**: UVM-Inspired Class-Based Verification
+
+## How to Run
+
+```bash
+# Compile all files
+vlog -sv *.sv
+
+# Simulate
+vsim -voptargs=+acc work.top
+Skills Demonstrated
+
+Advanced SystemVerilog OOP
+Constrained Randomization
+Functional Coverage & Cross Coverage
+Scoreboard Design
+Virtual Interfaces & Modports
+SystemVerilog Assertions (SVA)
+Testbench Architecture
+
