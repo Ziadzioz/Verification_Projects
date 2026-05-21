@@ -20,17 +20,29 @@ This project demonstrates a robust verification architecture for a complex ALU s
 ## Project Structure
 ALU_Verification/
 ├── ALU.sv                  # Design Under Test (DUT)
+
 ├── Interface.sv            # ALU Interface with modports
+
 ├── Transction.sv           # Transaction class
+
 ├── Generator.sv
+
 ├── Driver.sv
+
 ├── Monitor.sv
+
 ├── Score_Board.sv
+
 ├── Coverage.sv
+
 ├── Enviroment.sv
+
 ├── SVA.sv                  # SystemVerilog Assertions
+
 ├── TB.sv                   # Testbench
+
 ├── TOP.sv                  # Top module
+
 └── Packages/               # All packages
 text## Verification Achievements
 
