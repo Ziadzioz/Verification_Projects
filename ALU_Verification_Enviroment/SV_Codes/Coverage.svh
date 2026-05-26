@@ -1,12 +1,6 @@
-package ALU_Coverage;
+  /////////////// Importing ALL Packages 
 
-        /////////////// Importing Transaction Class
-
-
-        import ALU_Transction::*;
-
-         
-        
+                import ALU_PACKAGE::*;
 
          ///////////////// Class for Coverage Process
 
@@ -75,7 +69,7 @@ package ALU_Coverage;
                                                                                        option.cross_auto_bin_max = 0 ; 
                                                                            
                                                                                         bins Positive_over_flow   = binsof (OP_CP.ADD ) &&  binsof (A_CP.A_Data_Max ) &&  binsof (B_CP.B_Data_Max );
-                                                                                        bins Negative_over_flow   = binsof (OP_CP.ADD ) &&  binsof (A_CP.A_Data_Min ) &&  binsof (B_CP.B_Data_Min );
+                                                                        //                bins Negative_over_flow   = binsof (OP_CP.ADD ) &&  binsof (A_CP.A_Data_Min ) &&  binsof (B_CP.B_Data_Min );
                                                              
                                                                                       }
 
@@ -104,7 +98,7 @@ package ALU_Coverage;
                                                                                        option.cross_auto_bin_max = 0 ; 
                                                                            
                                                                                         bins Positive_over_flow   = binsof (OP_CP.MULT) &&  binsof (A_CP.A_Data_Max ) &&  binsof (B_CP.B_Data_Max );
-                                                                                        bins Negative_over_flow   = binsof (OP_CP.MULT ) &&  binsof (A_CP.A_Data_Min ) &&  binsof (B_CP.B_Data_Min );
+                                                                                //        bins Negative_over_flow   = binsof (OP_CP.MULT ) &&  binsof (A_CP.A_Data_Min ) &&  binsof (B_CP.B_Data_Min );
                                                              
                                                                                       }
 
@@ -141,21 +135,21 @@ package ALU_Coverage;
              // ================== Sample Method ==================   FOR Sampling the ROdomized Data  
                 
 
-                function  void Sample_DATA(Transction tr);
+                function  void Sample_DATA(Transction tr_mon);
 
-                   ALU_tr_cov.rst         = tr.rst;
-                   ALU_tr_cov.A           = tr.A;
-                   ALU_tr_cov.B           = tr.B;
-                   ALU_tr_cov.serial_in   = tr.serial_in;
-                   ALU_tr_cov.opcode      = tr.opcode;
-                   ALU_tr_cov.direction   = tr.direction;
-                   ALU_tr_cov.red_op_A    = tr.red_op_A;
-                   ALU_tr_cov.red_op_B    = tr.red_op_B;
-                   ALU_tr_cov.bypass_A   = tr.bypass_A;
-                   ALU_tr_cov.bypass_B   = tr.bypass_B;
+                   ALU_tr_cov.rst         = tr_mon.rst;
+                   ALU_tr_cov.A           = tr_mon.A;
+                   ALU_tr_cov.B           = tr_mon.B;
+                   ALU_tr_cov.serial_in   = tr_mon.serial_in;
+                   ALU_tr_cov.opcode      = tr_mon.opcode;
+                   ALU_tr_cov.direction   = tr_mon.direction;
+                   ALU_tr_cov.red_op_A    = tr_mon.red_op_A;
+                   ALU_tr_cov.red_op_B    = tr_mon.red_op_B;
+                   ALU_tr_cov.bypass_A    = tr_mon.bypass_A;
+                   ALU_tr_cov.bypass_B    = tr_mon.bypass_B;
 
-                   ALU_tr_cov.out        = tr.out;
-                   ALU_tr_cov.leds       = tr.leds;
+                   ALU_tr_cov.out         = tr_mon.out;
+                   ALU_tr_cov.leds        = tr_mon.leds;
 
                    
                                     //////////          it was possible to do  this.ALU_tr_cov = tr; instead
@@ -167,42 +161,3 @@ package ALU_Coverage;
 
              endclass
     
-endpackage
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

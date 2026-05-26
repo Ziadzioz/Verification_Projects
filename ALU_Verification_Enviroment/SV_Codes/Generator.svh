@@ -1,22 +1,19 @@
-package ALU_Generator;
-  
-
-  import ALU_Transction ::*;
+        /////////////// Importing ALL Packages 
+                import ALU_PACKAGE::*;
 
   class Generator;
 
     /// Mail Box To send the Transaction Data From Generator to driver
 
-       mailbox #(Transction) GEN2DRV;
+       mailbox GEN2DRV;
        
     /////  No of Iterations
 
-    int Iterations = 1000;
-
+    int Iterations = 5000;
 
     /// Consructor
     
-    function new(mailbox #(Transction) GEN2DRV);
+    function new(mailbox GEN2DRV);
              
              this.GEN2DRV = GEN2DRV;   //// for passing this mail to the class one
 
@@ -33,15 +30,11 @@ package ALU_Generator;
 
                               assert (tr_rand.randomize()) 
                                  else   $error(" Randomization Failed");
-
+                          
                                   ////// For passing the rand verion to driver
                                GEN2DRV.put(tr_rand);
-
-                end
-                     
-                          
+                end           
           endtask 
-
   endclass 
     
-endpackage
+

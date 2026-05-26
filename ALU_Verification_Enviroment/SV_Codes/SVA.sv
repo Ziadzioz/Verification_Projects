@@ -1,18 +1,12 @@
+  /////////////// Importing ALL Packages 
+
+                import ALU_PACKAGE::*;
+
 ///////////////////////////////////////////////////////// REquierd for testing the protocals and timing info and the corner cases in the design
 
- module ALU_SVA (ALU_IF.DUT SVA_IF);
+module ALU_SVA (ALU_IF SVA_IF);
      
-     /////// defining new Data types
-
-     typedef enum logic [2:0] {  OR       = 3'b000,
-                            XOR      = 3'b001,
-                            ADD      = 3'b010,
-                            MULT     = 3'b011,
-                            SHIFT    = 3'b100,
-                            ROTATE   = 3'b101,
-                            INVALID_6 = 3'b110,
-                            INVALID_7 = 3'b111 } op;
-
+   
      ////////////////////////////////////////// Writing the Properties for the Concarnt Assertions
 
        ////// TESTING ALU_Main Operations
@@ -20,7 +14,7 @@
           //////// ADDTION
    
           property  ADDER;
-                @(posedge SVA_IF.clk) disable iff(SVA_IF.rst && (SVA_IF.bypass_A) && (SVA_IF.bypass_B))
+                @(posedge SVA_IF.clk) disable iff(SVA_IF.rst || (SVA_IF.bypass_A) || (SVA_IF.bypass_B))
                   
                  (((SVA_IF.opcode == ADD ) && (!SVA_IF.red_op_A) && (!SVA_IF.red_op_B)))
                                                                                        |-> ##2 ((SVA_IF.out == $past(SVA_IF.A,2) + $past(SVA_IF.B,2)) && (SVA_IF.leds == 0));
@@ -111,7 +105,7 @@
                 @(posedge SVA_IF.clk) disable iff(SVA_IF.rst)
                   
                    ((!SVA_IF.bypass_A) && (!SVA_IF.bypass_B) && (SVA_IF.opcode == SHIFT) && (!SVA_IF.direction) && (!SVA_IF.red_op_A) && (!SVA_IF.red_op_B))
-                                                                                                              |-> ##2  (SVA_IF.out == {SVA_IF.serial_in, (($past(SVA_IF.out[5:1], 2)))})
+                                                                                                              |-> ##2  (SVA_IF.out == {$past(SVA_IF.serial_in,2),(($past(SVA_IF.A[2:1],2)))})
                                                                                                                        &&(SVA_IF.leds == 0);
           endproperty
 
@@ -120,7 +114,7 @@
                 @(posedge SVA_IF.clk)  disable iff(SVA_IF.rst)
                   
                   ((!SVA_IF.bypass_A) && (!SVA_IF.bypass_B) && (SVA_IF.opcode == SHIFT) && (SVA_IF.direction) && (!SVA_IF.red_op_A) && (!SVA_IF.red_op_B))
-                                                                                                              |-> ##2  (SVA_IF.out == {$past(SVA_IF.out[4:0],2),$past(SVA_IF.serial_in,2)} )
+                                                                                                              |-> ##2  (SVA_IF.out == {$past(SVA_IF.A[1:0],2),$past(SVA_IF.serial_in,2)} )
                                                                                                                        &&(SVA_IF.leds == 0);
           endproperty
 
@@ -131,19 +125,19 @@
            //////// Rotating
 
           property  Rotate_RER;
-                @(posedge SVA_IF.clk)  disable iff(SVA_IF.rst && SVA_IF.bypass_A && SVA_IF.bypass_B)
+                @(posedge SVA_IF.clk)  disable iff(SVA_IF.rst || SVA_IF.bypass_A || SVA_IF.bypass_B)
                   
                    (SVA_IF.opcode == ROTATE) && (!SVA_IF.direction) && (!SVA_IF.red_op_A) && (!SVA_IF.red_op_B) 
-                                                                                                               |-> ##2  (SVA_IF.out == {$past(SVA_IF.out[5],2),$past(SVA_IF.out[5:1],2)} )
+                                                                                                               |-> ##2  (SVA_IF.out == {$past(SVA_IF.A[0],2),$past(SVA_IF.A[2:1],2)} )
                                                                                                                          &&(SVA_IF.leds == 0)
           endproperty
 
 
           property  Rotate_LER;
-                @(posedge SVA_IF.clk) disable iff(SVA_IF.rst && SVA_IF.bypass_A && SVA_IF.bypass_B)
+                @(posedge SVA_IF.clk) disable iff(SVA_IF.rst || SVA_IF.bypass_A || SVA_IF.bypass_B)
                   
-                   (SVA_IF.opcode == SHIFT) && (SVA_IF.direction) && (!SVA_IF.red_op_A) && (!SVA_IF.red_op_B) 
-                                                                                                              |-> ##2  (SVA_IF.out == {$past(SVA_IF.out[4:0],2),$past(SVA_IF.out[5],2)} )
+                   (SVA_IF.opcode == ROTATE) && (SVA_IF.direction) && (!SVA_IF.red_op_A) && (!SVA_IF.red_op_B) 
+                                                                                                              |-> ##2  (SVA_IF.out == {$past(SVA_IF.A[1:0],2),$past(SVA_IF.A[2],2)} )
                                                                                                                        &&(SVA_IF.leds == 0)
           endproperty
 
@@ -174,14 +168,14 @@
                ////////////////// Invalid Property
                
                 property  InvalidER;
-                  @(posedge SVA_IF.clk) disable iff(!SVA_IF.rst && SVA_IF.bypass_A && SVA_IF.bypass_B)
+                  @(posedge SVA_IF.clk) disable iff(SVA_IF.rst || SVA_IF.bypass_A || SVA_IF.bypass_B)
                   
-                   (SVA_IF.opcode == INVALID_6 || SVA_IF.opcode == INVALID_7 ) || ((SVA_IF.red_op_A || SVA_IF.red_op_B ) && (SVA_IF.opcode != OR || SVA_IF.opcode != XOR))
-                                                                                                                                                                        |-> ##2  (SVA_IF.out == $past(SVA_IF.B,2))
-                                                                                                                                                                                &&(SVA_IF.leds == 0)
-                endproperty  
+                   (SVA_IF.opcode == INVALID_6 || SVA_IF.opcode == INVALID_7 ) || ((SVA_IF.red_op_A || SVA_IF.red_op_B) && (SVA_IF.opcode != OR && SVA_IF.opcode != XOR))
+                                                                                                                                                                        |-> ##2  (SVA_IF.out == 0)
+                                                                                                                                                                              
+                endproperty 
 
-      
+
           
            ///////////////////////////////////////////////// Writing the Assert Properties
              
@@ -232,6 +226,7 @@
 
                 INVALID: assert property (InvalidER) 
                                                 else $error (" Testing the INVALID has Failed") ;
+                                                                
                
 
                 /////////////////////// Writing the Cover properties for the Concarnt Assertion
@@ -264,7 +259,8 @@
                                                
                  BY_Pass_B_COV: cover property (BY_PASS_AER) ;
 
-                 INVALID_COV: cover property (InvalidER) ;
+                INVALID_COV: cover property (InvalidER) ;
+                
                                                               
   
               

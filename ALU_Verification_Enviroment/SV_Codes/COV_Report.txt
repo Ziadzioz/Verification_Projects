@@ -1,0 +1,735 @@
+Coverage Report by DU with details
+
+=================================================================================
+=== Design Unit: work.ALU
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        25        25         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for Design Unit work.ALU
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ALU.sv
+------------------------------------IF Branch------------------------------------
+    32                                      1005     Count coming in to IF
+    32              1                          2             if (rst) begin
+    44              1                       1003             end else begin
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    62                                      1002     Count coming in to IF
+    62              1                         48             if (bypass_A_reg) begin
+    65              1                        142             end else if (bypass_B_reg) begin
+    68              1                         60             end else if ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR && opcode_reg != XOR) ) begin
+    71              1                        752             end else begin
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    72                                       752     Count coming in to CASE
+    73              1                        136                     ADD: begin
+    77              1                        125                     MULT: begin
+    81              1                        133                     OR: begin
+    87              1                         87                     XOR: begin
+    93              1                         64                     SHIFT: begin
+    98              1                         85                     ROTATE: begin
+    103             1                         53                     INVALID_6, INVALID_7: begin
+    103             2                         67     
+    107             1                          2                     default: begin
+Branch totals: 9 hits of 9 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    82                                       133     Count coming in to IF
+    82              1                         72                         if (red_op_A_reg) out_next = |A_reg;
+    83              1                         33                         else if (red_op_B_reg) out_next = |B_reg;
+    84              1                         28                         else out_next = A_reg | B_reg;
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    88                                        87     Count coming in to IF
+    88              1                         44                         if (red_op_A_reg) out_next = ^A_reg;
+    89              1                         22                         else if (red_op_B_reg) out_next = ^B_reg;
+    90              1                         21                         else out_next = A_reg ^ B_reg;
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    94                                        64     Count coming in to IF
+    94              1                         33                         if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+    95              1                         31                         else out_next = {serial_in_reg, A_reg[2:1]};
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    99                                        85     Count coming in to IF
+    99              1                         47                         if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+    100             1                         38                         else out_next = {A_reg[0], A_reg[2:1]};
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                       4         4         0   100.00%
+
+================================Condition Details================================
+
+Condition Coverage for Design Unit work.ALU --
+
+  File ALU.sv
+----------------Focused Condition View-------------------
+Line       68 Item    1  (((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR)) && (opcode_reg != XOR))
+Condition totals: 4 of 4 input terms covered = 100.00%
+
+           Input Term   Covered  Reason for no coverage   Hint
+          -----------  --------  -----------------------  --------------
+         red_op_A_reg         Y
+         red_op_B_reg         Y
+   (opcode_reg != OR)         Y
+  (opcode_reg != XOR)         Y
+
+     Rows:       Hits  FEC Target             Non-masking condition(s)      
+ ---------  ---------  --------------------   -------------------------     
+  Row   1:          1  red_op_A_reg_0         ~red_op_B_reg                 
+  Row   2:          1  red_op_A_reg_1         ((opcode_reg != XOR) && (opcode_reg != OR))
+  Row   3:          1  red_op_B_reg_0         ~red_op_A_reg                 
+  Row   4:          1  red_op_B_reg_1         ((opcode_reg != XOR) && (opcode_reg != OR) && ~red_op_A_reg)
+  Row   5:          1  (opcode_reg != OR)_0   (red_op_A_reg || red_op_B_reg)
+  Row   6:          1  (opcode_reg != OR)_1   ((opcode_reg != XOR) && (red_op_A_reg || red_op_B_reg))
+  Row   7:          1  (opcode_reg != XOR)_0  ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR))
+  Row   8:          1  (opcode_reg != XOR)_1  ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR))
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      54        54         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for Design Unit work.ALU --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ALU.sv
+    5                                                module ALU (
+    6                                                    input logic              clk,            
+    7                                                    input logic              rst,            
+    8                                                    input logic signed [2:0] A,        
+    9                                                    input logic signed [2:0] B,        
+    10                                                   input op                 opcode,   
+    11                                                   input logic              red_op_A,       
+    12                                                   input logic              red_op_B,       
+    13                                                   input logic              bypass_A,       
+    14                                                   input logic              bypass_B,       
+    15                                                   input logic              direction,      
+    16                                                   input logic              serial_in,      
+    17                                               
+    18                                                   output logic signed [5:0] out,     
+    19                                                   output logic [15:0]       leds     
+    20                                               );
+    21                                               
+    22                                                   
+    23                                               
+    24                                                   logic signed [2:0]    A_reg, B_reg;
+    25                                                   op                    opcode_reg;
+    26                                                   logic                 red_op_A_reg, red_op_B_reg, bypass_A_reg, bypass_B_reg;
+    27                                                   logic                 direction_reg, serial_in_reg;
+    28                                                   logic signed [5:0]    out_next;
+    29                                                   logic        [15:0]   leds_next;
+    30                                                 
+    31              1                       1005         always_ff @(posedge clk or rst) begin
+    32                                                       if (rst) begin
+    33              1                          2                 A_reg <= 3'b0;
+    34              1                          2                 B_reg <= 3'b0;
+    35              1                          2                 opcode_reg <= OR;
+    36              1                          2                 red_op_A_reg <= 1'b0;
+    37              1                          2                 red_op_B_reg <= 1'b0;
+    38              1                          2                 bypass_A_reg <= 1'b0;
+    39              1                          2                 bypass_B_reg <= 1'b0;
+    40              1                          2                 direction_reg <= 1'b0;
+    41              1                          2                 serial_in_reg <= 1'b0;
+    42              1                          2                 out <= 0;
+    43              1                          2                 leds <= 0;
+    44                                                       end else begin
+    45              1                       1003                 A_reg <= A;
+    46              1                       1003                 B_reg <= B;
+    47              1                       1003                 opcode_reg <= opcode;
+    48              1                       1003                 red_op_A_reg <= red_op_A;
+    49              1                       1003                 red_op_B_reg <= red_op_B;
+    50              1                       1003                 bypass_A_reg <= bypass_A;
+    51              1                       1003                 bypass_B_reg <= bypass_B;
+    52              1                       1003                 direction_reg <= direction;
+    53              1                       1003                 serial_in_reg <= serial_in;
+    54              1                       1003                 out <= out_next;
+    55              1                       1003                 leds <= leds_next;
+    56                                                       end
+    57                                                   end
+    58                                               
+    59              1                       1002         always_comb begin
+    60              1                       1002             out_next = 0;
+    61              1                       1002             leds_next = leds;
+    62                                                       if (bypass_A_reg) begin
+    63              1                         48                 out_next = A_reg;
+    64              1                         48                 leds_next = 0;
+    65                                                       end else if (bypass_B_reg) begin
+    66              1                        142                 out_next = B_reg;
+    67              1                        142                 leds_next = 0;
+    68                                                       end else if ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR && opcode_reg != XOR) ) begin
+    69              1                         60                 out_next = 0;
+    70              1                         60                 leds_next = ~leds;
+    71                                                       end else begin
+    72                                                           case (opcode_reg)
+    73                                                               ADD: begin
+    74              1                        136                         out_next = A_reg + B_reg;
+    75              1                        136                         leds_next = 0;
+    76                                                               end
+    77                                                               MULT: begin
+    78              1                        125                         out_next = A_reg * B_reg;
+    79              1                        125                         leds_next = 0;
+    80                                                               end
+    81                                                               OR: begin
+    82              1                         72                         if (red_op_A_reg) out_next = |A_reg;
+    83              1                         33                         else if (red_op_B_reg) out_next = |B_reg;
+    84              1                         28                         else out_next = A_reg | B_reg;
+    85              1                        133                         leds_next = 0;
+    86                                                               end
+    87                                                               XOR: begin
+    88              1                         44                         if (red_op_A_reg) out_next = ^A_reg;
+    89              1                         22                         else if (red_op_B_reg) out_next = ^B_reg;
+    90              1                         21                         else out_next = A_reg ^ B_reg;
+    91              1                         87                         leds_next = 0;
+    92                                                               end
+    93                                                               SHIFT: begin
+    94              1                         33                         if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+    95              1                         31                         else out_next = {serial_in_reg, A_reg[2:1]};
+    96              1                         64                         leds_next = 0;
+    97                                                               end
+    98                                                               ROTATE: begin
+    99              1                         47                         if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+    100             1                         38                         else out_next = {A_reg[0], A_reg[2:1]};
+    101             1                         85                         leds_next = 0;
+    102                                                              end
+    103                                                              INVALID_6, INVALID_7: begin
+    104             1                        120                         out_next = 0;
+    105             1                        120                         leds_next = ~leds;
+    106                                                              end
+    107                                                              default: begin
+    108             1                          2                         out_next = 0;
+    109             1                          2                         leds_next = 0;
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        154       153         1    99.35%
+
+================================Toggle Details================================
+
+Toggle Coverage for Design Unit work.ALU
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                        opcode_reg               ENUM type       Value       Count 
+                                               rst           1           0                               50.00 
+
+Total Node Count     =         81 
+Toggled Node Count   =         80 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.35% (153 of 154 bins)
+
+
+Total Coverage By Design Unit (filtered view): 99.83%
+
+Coverage Report by DU with details
+
+=================================================================================
+=== Design Unit: work.ALU
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        25        25         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for Design Unit work.ALU
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ALU.sv
+------------------------------------IF Branch------------------------------------
+    32                                     50002     Count coming in to IF
+    32              1                          2             if (rst) begin
+    44              1                      50000             end else begin
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    62                                     49996     Count coming in to IF
+    62              1                        260             if (bypass_A_reg) begin
+    65              1                        710             end else if (bypass_B_reg) begin
+    68              1                        282             end else if ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR && opcode_reg != XOR) ) begin
+    71              1                      48744             end else begin
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    72                                     48744     Count coming in to CASE
+    73              1                        637                     ADD: begin
+    77              1                        623                     MULT: begin
+    81              1                        678                     OR: begin
+    87              1                        479                     XOR: begin
+    93              1                        310                     SHIFT: begin
+    98              1                        441                     ROTATE: begin
+    103             1                      45276                     INVALID_6, INVALID_7: begin
+    103             2                        298     
+    107             1                          2                     default: begin
+Branch totals: 9 hits of 9 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    82                                       678     Count coming in to IF
+    82              1                        341                         if (red_op_A_reg) out_next = |A_reg;
+    83              1                        163                         else if (red_op_B_reg) out_next = |B_reg;
+    84              1                        174                         else out_next = A_reg | B_reg;
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    88                                       479     Count coming in to IF
+    88              1                        247                         if (red_op_A_reg) out_next = ^A_reg;
+    89              1                        138                         else if (red_op_B_reg) out_next = ^B_reg;
+    90              1                         94                         else out_next = A_reg ^ B_reg;
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    94                                       310     Count coming in to IF
+    94              1                        158                         if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+    95              1                        152                         else out_next = {serial_in_reg, A_reg[2:1]};
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    99                                       441     Count coming in to IF
+    99              1                        256                         if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+    100             1                        185                         else out_next = {A_reg[0], A_reg[2:1]};
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                       4         4         0   100.00%
+
+================================Condition Details================================
+
+Condition Coverage for Design Unit work.ALU --
+
+  File ALU.sv
+----------------Focused Condition View-------------------
+Line       68 Item    1  (((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR)) && (opcode_reg != XOR))
+Condition totals: 4 of 4 input terms covered = 100.00%
+
+           Input Term   Covered  Reason for no coverage   Hint
+          -----------  --------  -----------------------  --------------
+         red_op_A_reg         Y
+         red_op_B_reg         Y
+   (opcode_reg != OR)         Y
+  (opcode_reg != XOR)         Y
+
+     Rows:       Hits  FEC Target             Non-masking condition(s)      
+ ---------  ---------  --------------------   -------------------------     
+  Row   1:          1  red_op_A_reg_0         ~red_op_B_reg                 
+  Row   2:          1  red_op_A_reg_1         ((opcode_reg != XOR) && (opcode_reg != OR))
+  Row   3:          1  red_op_B_reg_0         ~red_op_A_reg                 
+  Row   4:          1  red_op_B_reg_1         ((opcode_reg != XOR) && (opcode_reg != OR) && ~red_op_A_reg)
+  Row   5:          1  (opcode_reg != OR)_0   (red_op_A_reg || red_op_B_reg)
+  Row   6:          1  (opcode_reg != OR)_1   ((opcode_reg != XOR) && (red_op_A_reg || red_op_B_reg))
+  Row   7:          1  (opcode_reg != XOR)_0  ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR))
+  Row   8:          1  (opcode_reg != XOR)_1  ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR))
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      54        54         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for Design Unit work.ALU --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ALU.sv
+    5                                                module ALU (
+    6                                                    input logic              clk,            
+    7                                                    input logic              rst,            
+    8                                                    input logic signed [2:0] A,        
+    9                                                    input logic signed [2:0] B,        
+    10                                                   input op                 opcode,   
+    11                                                   input logic              red_op_A,       
+    12                                                   input logic              red_op_B,       
+    13                                                   input logic              bypass_A,       
+    14                                                   input logic              bypass_B,       
+    15                                                   input logic              direction,      
+    16                                                   input logic              serial_in,      
+    17                                               
+    18                                                   output logic signed [5:0] out,     
+    19                                                   output logic [15:0]       leds     
+    20                                               );
+    21                                               
+    22                                                   
+    23                                               
+    24                                                   logic signed [2:0]    A_reg, B_reg;
+    25                                                   op                    opcode_reg;
+    26                                                   logic                 red_op_A_reg, red_op_B_reg, bypass_A_reg, bypass_B_reg;
+    27                                                   logic                 direction_reg, serial_in_reg;
+    28                                                   logic signed [5:0]    out_next;
+    29                                                   logic        [15:0]   leds_next;
+    30                                                 
+    31              1                      50002         always_ff @(posedge clk or rst) begin
+    32                                                       if (rst) begin
+    33              1                          2                 A_reg <= 3'b0;
+    34              1                          2                 B_reg <= 3'b0;
+    35              1                          2                 opcode_reg <= OR;
+    36              1                          2                 red_op_A_reg <= 1'b0;
+    37              1                          2                 red_op_B_reg <= 1'b0;
+    38              1                          2                 bypass_A_reg <= 1'b0;
+    39              1                          2                 bypass_B_reg <= 1'b0;
+    40              1                          2                 direction_reg <= 1'b0;
+    41              1                          2                 serial_in_reg <= 1'b0;
+    42              1                          2                 out <= 0;
+    43              1                          2                 leds <= 0;
+    44                                                       end else begin
+    45              1                      50000                 A_reg <= A;
+    46              1                      50000                 B_reg <= B;
+    47              1                      50000                 opcode_reg <= opcode;
+    48              1                      50000                 red_op_A_reg <= red_op_A;
+    49              1                      50000                 red_op_B_reg <= red_op_B;
+    50              1                      50000                 bypass_A_reg <= bypass_A;
+    51              1                      50000                 bypass_B_reg <= bypass_B;
+    52              1                      50000                 direction_reg <= direction;
+    53              1                      50000                 serial_in_reg <= serial_in;
+    54              1                      50000                 out <= out_next;
+    55              1                      50000                 leds <= leds_next;
+    56                                                       end
+    57                                                   end
+    58                                               
+    59              1                      49996         always_comb begin
+    60              1                      49996             out_next = 0;
+    61              1                      49996             leds_next = leds;
+    62                                                       if (bypass_A_reg) begin
+    63              1                        260                 out_next = A_reg;
+    64              1                        260                 leds_next = 0;
+    65                                                       end else if (bypass_B_reg) begin
+    66              1                        710                 out_next = B_reg;
+    67              1                        710                 leds_next = 0;
+    68                                                       end else if ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR && opcode_reg != XOR) ) begin
+    69              1                        282                 out_next = 0;
+    70              1                        282                 leds_next = ~leds;
+    71                                                       end else begin
+    72                                                           case (opcode_reg)
+    73                                                               ADD: begin
+    74              1                        637                         out_next = A_reg + B_reg;
+    75              1                        637                         leds_next = 0;
+    76                                                               end
+    77                                                               MULT: begin
+    78              1                        623                         out_next = A_reg * B_reg;
+    79              1                        623                         leds_next = 0;
+    80                                                               end
+    81                                                               OR: begin
+    82              1                        341                         if (red_op_A_reg) out_next = |A_reg;
+    83              1                        163                         else if (red_op_B_reg) out_next = |B_reg;
+    84              1                        174                         else out_next = A_reg | B_reg;
+    85              1                        678                         leds_next = 0;
+    86                                                               end
+    87                                                               XOR: begin
+    88              1                        247                         if (red_op_A_reg) out_next = ^A_reg;
+    89              1                        138                         else if (red_op_B_reg) out_next = ^B_reg;
+    90              1                         94                         else out_next = A_reg ^ B_reg;
+    91              1                        479                         leds_next = 0;
+    92                                                               end
+    93                                                               SHIFT: begin
+    94              1                        158                         if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+    95              1                        152                         else out_next = {serial_in_reg, A_reg[2:1]};
+    96              1                        310                         leds_next = 0;
+    97                                                               end
+    98                                                               ROTATE: begin
+    99              1                        256                         if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+    100             1                        185                         else out_next = {A_reg[0], A_reg[2:1]};
+    101             1                        441                         leds_next = 0;
+    102                                                              end
+    103                                                              INVALID_6, INVALID_7: begin
+    104             1                      45574                         out_next = 0;
+    105             1                      45574                         leds_next = ~leds;
+    106                                                              end
+    107                                                              default: begin
+    108             1                          2                         out_next = 0;
+    109             1                          2                         leds_next = 0;
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        154       153         1    99.35%
+
+================================Toggle Details================================
+
+Toggle Coverage for Design Unit work.ALU
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                        opcode_reg               ENUM type       Value       Count 
+                                               rst           1           0                               50.00 
+
+Total Node Count     =         81 
+Toggled Node Count   =         80 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.35% (153 of 154 bins)
+
+
+Total Coverage By Design Unit (filtered view): 99.83%
+
+Coverage Report by DU with details
+
+=================================================================================
+=== Design Unit: work.ALU
+=================================================================================
+Branch Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Branches                        25        25         0   100.00%
+
+================================Branch Details================================
+
+Branch Coverage for Design Unit work.ALU
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ALU.sv
+------------------------------------IF Branch------------------------------------
+    32                                     50002     Count coming in to IF
+    32              1                          2             if (rst) begin
+    44              1                      50000             end else begin
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    62                                     49996     Count coming in to IF
+    62              1                        260             if (bypass_A_reg) begin
+    65              1                        710             end else if (bypass_B_reg) begin
+    68              1                        282             end else if ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR && opcode_reg != XOR) ) begin
+    71              1                      48744             end else begin
+Branch totals: 4 hits of 4 branches = 100.00%
+
+------------------------------------CASE Branch------------------------------------
+    72                                     48744     Count coming in to CASE
+    73              1                        637                     ADD: begin
+    77              1                        623                     MULT: begin
+    81              1                        678                     OR: begin
+    87              1                        479                     XOR: begin
+    93              1                        310                     SHIFT: begin
+    98              1                        441                     ROTATE: begin
+    103             1                      45276                     INVALID_6, INVALID_7: begin
+    103             2                        298     
+    107             1                          2                     default: begin
+Branch totals: 9 hits of 9 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    82                                       678     Count coming in to IF
+    82              1                        341                         if (red_op_A_reg) out_next = |A_reg;
+    83              1                        163                         else if (red_op_B_reg) out_next = |B_reg;
+    84              1                        174                         else out_next = A_reg | B_reg;
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    88                                       479     Count coming in to IF
+    88              1                        247                         if (red_op_A_reg) out_next = ^A_reg;
+    89              1                        138                         else if (red_op_B_reg) out_next = ^B_reg;
+    90              1                         94                         else out_next = A_reg ^ B_reg;
+Branch totals: 3 hits of 3 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    94                                       310     Count coming in to IF
+    94              1                        158                         if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+    95              1                        152                         else out_next = {serial_in_reg, A_reg[2:1]};
+Branch totals: 2 hits of 2 branches = 100.00%
+
+------------------------------------IF Branch------------------------------------
+    99                                       441     Count coming in to IF
+    99              1                        256                         if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+    100             1                        185                         else out_next = {A_reg[0], A_reg[2:1]};
+Branch totals: 2 hits of 2 branches = 100.00%
+
+
+Condition Coverage:
+    Enabled Coverage              Bins   Covered    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Conditions                       4         4         0   100.00%
+
+================================Condition Details================================
+
+Condition Coverage for Design Unit work.ALU --
+
+  File ALU.sv
+----------------Focused Condition View-------------------
+Line       68 Item    1  (((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR)) && (opcode_reg != XOR))
+Condition totals: 4 of 4 input terms covered = 100.00%
+
+           Input Term   Covered  Reason for no coverage   Hint
+          -----------  --------  -----------------------  --------------
+         red_op_A_reg         Y
+         red_op_B_reg         Y
+   (opcode_reg != OR)         Y
+  (opcode_reg != XOR)         Y
+
+     Rows:       Hits  FEC Target             Non-masking condition(s)      
+ ---------  ---------  --------------------   -------------------------     
+  Row   1:          1  red_op_A_reg_0         ~red_op_B_reg                 
+  Row   2:          1  red_op_A_reg_1         ((opcode_reg != XOR) && (opcode_reg != OR))
+  Row   3:          1  red_op_B_reg_0         ~red_op_A_reg                 
+  Row   4:          1  red_op_B_reg_1         ((opcode_reg != XOR) && (opcode_reg != OR) && ~red_op_A_reg)
+  Row   5:          1  (opcode_reg != OR)_0   (red_op_A_reg || red_op_B_reg)
+  Row   6:          1  (opcode_reg != OR)_1   ((opcode_reg != XOR) && (red_op_A_reg || red_op_B_reg))
+  Row   7:          1  (opcode_reg != XOR)_0  ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR))
+  Row   8:          1  (opcode_reg != XOR)_1  ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR))
+
+
+Statement Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Statements                      54        54         0   100.00%
+
+================================Statement Details================================
+
+Statement Coverage for Design Unit work.ALU --
+
+    Line         Item                      Count     Source 
+    ----         ----                      -----     ------ 
+  File ALU.sv
+    5                                                module ALU (
+    6                                                    input logic              clk,            
+    7                                                    input logic              rst,            
+    8                                                    input logic signed [2:0] A,        
+    9                                                    input logic signed [2:0] B,        
+    10                                                   input op                 opcode,   
+    11                                                   input logic              red_op_A,       
+    12                                                   input logic              red_op_B,       
+    13                                                   input logic              bypass_A,       
+    14                                                   input logic              bypass_B,       
+    15                                                   input logic              direction,      
+    16                                                   input logic              serial_in,      
+    17                                               
+    18                                                   output logic signed [5:0] out,     
+    19                                                   output logic [15:0]       leds     
+    20                                               );
+    21                                               
+    22                                                   
+    23                                               
+    24                                                   logic signed [2:0]    A_reg, B_reg;
+    25                                                   op                    opcode_reg;
+    26                                                   logic                 red_op_A_reg, red_op_B_reg, bypass_A_reg, bypass_B_reg;
+    27                                                   logic                 direction_reg, serial_in_reg;
+    28                                                   logic signed [5:0]    out_next;
+    29                                                   logic        [15:0]   leds_next;
+    30                                                 
+    31              1                      50002         always_ff @(posedge clk or rst) begin
+    32                                                       if (rst) begin
+    33              1                          2                 A_reg <= 3'b0;
+    34              1                          2                 B_reg <= 3'b0;
+    35              1                          2                 opcode_reg <= OR;
+    36              1                          2                 red_op_A_reg <= 1'b0;
+    37              1                          2                 red_op_B_reg <= 1'b0;
+    38              1                          2                 bypass_A_reg <= 1'b0;
+    39              1                          2                 bypass_B_reg <= 1'b0;
+    40              1                          2                 direction_reg <= 1'b0;
+    41              1                          2                 serial_in_reg <= 1'b0;
+    42              1                          2                 out <= 0;
+    43              1                          2                 leds <= 0;
+    44                                                       end else begin
+    45              1                      50000                 A_reg <= A;
+    46              1                      50000                 B_reg <= B;
+    47              1                      50000                 opcode_reg <= opcode;
+    48              1                      50000                 red_op_A_reg <= red_op_A;
+    49              1                      50000                 red_op_B_reg <= red_op_B;
+    50              1                      50000                 bypass_A_reg <= bypass_A;
+    51              1                      50000                 bypass_B_reg <= bypass_B;
+    52              1                      50000                 direction_reg <= direction;
+    53              1                      50000                 serial_in_reg <= serial_in;
+    54              1                      50000                 out <= out_next;
+    55              1                      50000                 leds <= leds_next;
+    56                                                       end
+    57                                                   end
+    58                                               
+    59              1                      49996         always_comb begin
+    60              1                      49996             out_next = 0;
+    61              1                      49996             leds_next = leds;
+    62                                                       if (bypass_A_reg) begin
+    63              1                        260                 out_next = A_reg;
+    64              1                        260                 leds_next = 0;
+    65                                                       end else if (bypass_B_reg) begin
+    66              1                        710                 out_next = B_reg;
+    67              1                        710                 leds_next = 0;
+    68                                                       end else if ((red_op_A_reg || red_op_B_reg) && (opcode_reg != OR && opcode_reg != XOR) ) begin
+    69              1                        282                 out_next = 0;
+    70              1                        282                 leds_next = ~leds;
+    71                                                       end else begin
+    72                                                           case (opcode_reg)
+    73                                                               ADD: begin
+    74              1                        637                         out_next = A_reg + B_reg;
+    75              1                        637                         leds_next = 0;
+    76                                                               end
+    77                                                               MULT: begin
+    78              1                        623                         out_next = A_reg * B_reg;
+    79              1                        623                         leds_next = 0;
+    80                                                               end
+    81                                                               OR: begin
+    82              1                        341                         if (red_op_A_reg) out_next = |A_reg;
+    83              1                        163                         else if (red_op_B_reg) out_next = |B_reg;
+    84              1                        174                         else out_next = A_reg | B_reg;
+    85              1                        678                         leds_next = 0;
+    86                                                               end
+    87                                                               XOR: begin
+    88              1                        247                         if (red_op_A_reg) out_next = ^A_reg;
+    89              1                        138                         else if (red_op_B_reg) out_next = ^B_reg;
+    90              1                         94                         else out_next = A_reg ^ B_reg;
+    91              1                        479                         leds_next = 0;
+    92                                                               end
+    93                                                               SHIFT: begin
+    94              1                        158                         if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+    95              1                        152                         else out_next = {serial_in_reg, A_reg[2:1]};
+    96              1                        310                         leds_next = 0;
+    97                                                               end
+    98                                                               ROTATE: begin
+    99              1                        256                         if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+    100             1                        185                         else out_next = {A_reg[0], A_reg[2:1]};
+    101             1                        441                         leds_next = 0;
+    102                                                              end
+    103                                                              INVALID_6, INVALID_7: begin
+    104             1                      45574                         out_next = 0;
+    105             1                      45574                         leds_next = ~leds;
+    106                                                              end
+    107                                                              default: begin
+    108             1                          2                         out_next = 0;
+    109             1                          2                         leds_next = 0;
+
+Toggle Coverage:
+    Enabled Coverage              Bins      Hits    Misses  Coverage
+    ----------------              ----      ----    ------  --------
+    Toggles                        154       153         1    99.35%
+
+================================Toggle Details================================
+
+Toggle Coverage for Design Unit work.ALU
+
+                                              Node      1H->0L      0L->1H                          "Coverage"
+                                              ---------------------------------------------------------------
+                                        opcode_reg               ENUM type       Value       Count 
+                                               rst           1           0                               50.00 
+
+Total Node Count     =         81 
+Toggled Node Count   =         80 
+Untoggled Node Count =          1 
+
+Toggle Coverage      =      99.35% (153 of 154 bins)
+
+
+Total Coverage By Design Unit (filtered view): 99.83%
+

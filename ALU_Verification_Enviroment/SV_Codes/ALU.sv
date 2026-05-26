@@ -1,9 +1,13 @@
+
+ /////////////// Importing ALL Packages 
+
+                import ALU_PACKAGE::*;
 module ALU (
     input logic              clk,            
     input logic              rst,            
     input logic signed [2:0] A,        
     input logic signed [2:0] B,        
-    input logic [2:0]        opcode,   
+    input op                 opcode,   
     input logic              red_op_A,       
     input logic              red_op_B,       
     input logic              bypass_A,       
@@ -15,19 +19,10 @@ module ALU (
     output logic [15:0]       leds     
 );
 
-    typedef enum logic [2:0] {
-        OR       = 3'b000,
-        XOR      = 3'b001,
-        ADD      = 3'b010,
-        MULT     = 3'b011,
-        SHIFT    = 3'b100,
-        ROTATE   = 3'b101,
-        INVALID_6 = 3'b110,
-        INVALID_7 = 3'b111
-    } opcode_t;
+    
 
     logic signed [2:0]    A_reg, B_reg;
-    logic        [2:0]    opcode_reg;
+    op                    opcode_reg;
     logic                 red_op_A_reg, red_op_B_reg, bypass_A_reg, bypass_B_reg;
     logic                 direction_reg, serial_in_reg;
     logic signed [5:0]    out_next;
@@ -37,7 +32,7 @@ module ALU (
         if (rst) begin
             A_reg <= 3'b0;
             B_reg <= 3'b0;
-            opcode_reg <= 3'b0;
+            opcode_reg <= OR;
             red_op_A_reg <= 1'b0;
             red_op_B_reg <= 1'b0;
             bypass_A_reg <= 1'b0;
@@ -96,13 +91,13 @@ module ALU (
                     leds_next = 0;
                 end
                 SHIFT: begin
-                    if (direction_reg) out_next = {out_next[4:0], serial_in_reg};
-                    else out_next = {serial_in_reg, out_next[5:1]};
+                    if (direction_reg) out_next = {A_reg[1:0], serial_in_reg};
+                    else out_next = {serial_in_reg, A_reg[2:1]};
                     leds_next = 0;
                 end
                 ROTATE: begin
-                    if (direction_reg) out_next = {out_next[4:0], out_next[5]};
-                    else out_next = {out_next[0], out_next[5:1]};
+                    if (direction_reg) out_next = {A_reg[1:0], A_reg[2]};
+                    else out_next = {A_reg[0], A_reg[2:1]};
                     leds_next = 0;
                 end
                 INVALID_6, INVALID_7: begin

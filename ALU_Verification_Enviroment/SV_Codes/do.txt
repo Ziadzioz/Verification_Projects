@@ -1,7 +1,11 @@
 vlib work
-vlog ALU.sv Package.sv ALU_TB.sv  +cover -covercells
+vlog -f source_file.txt +cover -covercells 
 vsim -voptargs=+acc work.ALU_TB -cover
 add wave *
+add wave -position insertpoint sim:/ALU_TB/vif/*
 coverage save ALU_TB.ucdb -onexit -du work.ALU
 run -all
+coverage report -detail -cvg -comments -output SFC_cov_rprt.txt {}
+coverage report -assertion -verbose -output assertion_coverage.rpt
+coverage report -output COV_Report.txt -append -du=ALU -detail -dump -annotate -option -assert -directive -cvg -codeAll
 

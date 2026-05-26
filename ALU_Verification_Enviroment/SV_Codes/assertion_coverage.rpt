@@ -1,0 +1,101 @@
+Coverage Report by instance with details
+
+=================================================================================
+=== Instance: /ALU_TB/SVA
+=== Design Unit: work.ALU_SVA
+=================================================================================
+
+Assertion Coverage:
+    Assertions                      17        17         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Name                 Assertion   Design     Design     Lang File(Line)                Enable    Failure      Pass  FPSA   Failure Pass    Failure EOS  Formal       Formal
+                     Type        Unit       UnitType                                            Count        Count Action Log     Log     Limit   Note Status       Radius
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/ALU_TB/SVA/ADDTION  Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(182)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/MULTIPLICATION
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(186)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/ORR      Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(189)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_OR_A
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(192)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_OR_B
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(195)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/XORR     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(198)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_XOR_A
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(201)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_XOR_B
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(204)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/SHIFTING_RIGHT
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(208)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/SHIFTING_LEFT
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(211)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Rotate_Right
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(215)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Rotate_Left
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(217)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/BY_Pass_A
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(221)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/BY_Pass_B
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(223)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/INVALID  Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(227)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Reset_for_Out
+                     Immediate   ALU_SVA    Verilog    SVA  SVA.sv(273)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Reset_for_LEDS
+                     Immediate   ALU_SVA    Verilog    SVA  SVA.sv(276)                 on            0          1 CCCC   -       -     unlimited off                     
+
+=================================================================================
+=== Instance: /ALU_PACKAGE
+=== Design Unit: work.ALU_PACKAGE
+=================================================================================
+
+Assertion Coverage:
+    Assertions                       1         1         0   100.00%
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Name                 Assertion   Design     Design     Lang File(Line)                Enable    Failure      Pass  FPSA   Failure Pass    Failure EOS  Formal       Formal
+                     Type        Unit       UnitType                                            Count        Count Action Log     Log     Limit   Note Status       Radius
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/ALU_PACKAGE/Generator/run/#anonblk#68284149#26#4#/#ublk#68284149#28/immed__31
+                     Immediate   ALU_PACKAGE
+                                            Verilog    SVA  Generator.svh(31)           on            0          1 CCCC   -       -     unlimited off                     
+
+
+ASSERTION RESULTS:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Name                 Assertion   Design     Design     Lang File(Line)                Enable    Failure      Pass  FPSA   Failure Pass    Failure EOS  Formal       Formal
+                     Type        Unit       UnitType                                            Count        Count Action Log     Log     Limit   Note Status       Radius
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/ALU_TB/SVA/ADDTION  Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(182)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/MULTIPLICATION
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(186)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/ORR      Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(189)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_OR_A
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(192)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_OR_B
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(195)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/XORR     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(198)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_XOR_A
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(201)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/REDUCTION_XOR_B
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(204)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/SHIFTING_RIGHT
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(208)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/SHIFTING_LEFT
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(211)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Rotate_Right
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(215)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Rotate_Left
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(217)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/BY_Pass_A
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(221)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/BY_Pass_B
+                     Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(223)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/INVALID  Concurrent  ALU_SVA    Verilog    SVA  SVA.sv(227)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Reset_for_Out
+                     Immediate   ALU_SVA    Verilog    SVA  SVA.sv(273)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_TB/SVA/Reset_for_LEDS
+                     Immediate   ALU_SVA    Verilog    SVA  SVA.sv(276)                 on            0          1 CCCC   -       -     unlimited off                     
+/ALU_PACKAGE/Generator/run/#anonblk#68284149#26#4#/#ublk#68284149#28/immed__31
+                     Immediate   ALU_PACKAGE
+                                            Verilog    SVA  Generator.svh(31)           on            0          1 CCCC   -       -     unlimited off                     
+
+Total Coverage By Instance (filtered view): 100.00%
+

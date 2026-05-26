@@ -2,18 +2,12 @@ interface ALU_IF(clk);
  
  input bit clk;
 
+
+        /////////////// Importing ALL Packages 
+
+                import ALU_PACKAGE::*;
+                
   ////////////////////////////////////// defining Signals //////////////////
-
-          /////// defining new Data types
-
-     typedef enum logic [2:0] {  OR       = 3'b000,
-                            XOR      = 3'b001,
-                            ADD      = 3'b010,
-                            MULT     = 3'b011,
-                            SHIFT    = 3'b100,
-                            ROTATE   = 3'b101,
-                            INVALID_6 = 3'b110,
-                            INVALID_7 = 3'b111 } op;
 
        //////////  Input Signals
 
@@ -36,7 +30,7 @@ interface ALU_IF(clk);
 
 
   
-
+/*
   ///////////// Clocking Blocks
   
        clocking cb @(posedge clk);

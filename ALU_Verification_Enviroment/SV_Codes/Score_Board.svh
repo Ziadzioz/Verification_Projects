@@ -1,25 +1,23 @@
-package ALU_Score_Board;
 
-      ///////////////////////////// Importing required Packages
+             /////////////// Importing ALL Packages 
 
-      import ALU_Transction ::*;
-      //////////////////////////// Score_Board Class
+                import ALU_PACKAGE::*;
 
     class Score_Board;
             
             
             /// Mail Box To rescive the Transaction Data From Monitor 
              
-               mailbox #(Transction) MON2SCB;
+               mailbox MON2SCB;
 
              /// Mail Box To rescive the Transaction Data From Driver 
              
-               mailbox #(Transction) DRV2SCB;
+               mailbox DRV2SCB;
           
            
              /// Consructor
     
-                function new(mailbox #(Transction) MON2SCB, mailbox #(Transction) DRV2SCB);
+                function new(mailbox MON2SCB, mailbox DRV2SCB);
                         
                         this.MON2SCB = MON2SCB;   //// for passing this mail to the class one
                         this.DRV2SCB = DRV2SCB;
@@ -30,50 +28,97 @@ package ALU_Score_Board;
 
                        int Pass_Count = 0;
                        int Error_Count = 0;
+                       int i = 0;
+                       logic signed [5:0]  expec_outt;
 
                        bit outt;
 
+             ///////////////////////////// Defining the Queues for SYNC the Mon with Drv
+
+              Transction  tarns_q[$] ;
+
+              parameter   Pipe_line_stages = 2;
+
+          //    Tran_expec_queue.out ;
+
+          Transction tr_expected = new();
+          Transction TR_QUEU = new();
+          Transction tr_actual   = new();
 
              ////////////////////////////////// Run Task for Comparing the Expected Data from the Driver and the one From Monitor the Actual one
 
                    task  run();
+                                   for (int r = 0; r < Pipe_line_stages ; r++)
+                                       begin
+                                             Transction tr_init = new();
+                                              tarns_q.push_back(tr_init); 
 
+                                       end   
                     forever 
                            begin 
-                              Transction tr_actual   = new();     // put the Data comes from the monitor on it
-                              Transction tr_expected = new();     // put the Data comes from the driver on it
+                                 
+                           // put the Data comes from the driver on it
+                                DRV2SCB.get(tr_expected);
+                                MON2SCB.get(tr_actual);               ////////// Getting the ACTUAL FROM the Monitor
 
+                                tarns_q.push_back(tr_expected);           ///////////////// storing the Expec Values
+                                                             
+                                 if(tarns_q.size() > 2);       ////////////// Waiting 2 Cycles for SYNC
+                                     begin
+                                            TR_QUEU = tarns_q.pop_front();
+                                    
+                                        ///////////////// Comparing the Expec Data with the Actual one
+                                        
+                                        Compare(outt,expec_outt,tr_actual,TR_QUEU);
+                                        i = i + 1;
 
-                               MON2SCB.get(tr_actual);               ////////// Getting the ACTUAL FROM the Monitor
-                               DRV2SCB.get(tr_expected);
-                               
+                                            $display("*************************************************");
+                                                    $display(" iteration number = %0d",i);
+                                             $display("*************************************************");
 
-                              ///////////////// Comparing the Expec Data with the Actual one
+                                             $display("***************************************************************************************************************");
+                                                    $display("expec_out = %0d & actual_out =  %0d at time ",expec_outt,tr_actual.out,$time);
+                                             $display("***************************************************************************************************************");
+                                            
 
-                              Compare(outt,tr_actual,tr_expected);
-                              if(outt)
-                               Pass_Count++;
-                              else
-                              Error_Count++;
-                              
+                                        if(outt)
+                                        Pass_Count = Pass_Count + 1;
+                                        else
+                                        Error_Count = Error_Count + 1;
+                                     end
                            end
 
-                                  Score_Board_Report();           ////////////////////// Printing the SCB Report
+                                              $display("***************************************************************************************************************");
+                                                               $display(" ******** Total no of Iteration  = %0d *************",i+1);
+                                             $display("***************************************************************************************************************");
+                                            
 
                        endtask
 
                               ////////////////////// Deifining the Golden Model
                                
-                                task Compare(output  bit returnn, input Transction actual, Transction expected);
+                                task Compare(   output bit returnn,
+                                                output logic signed [5:0] expec_out,
+                                                input Transction actual,
+                                                input Transction expected);
 
-                                   logic signed [5:0]  expec_out;
+                                   
                                    logic signed [2:0]  expec_A,expec_B;
                                    logic        [15:0] expec_leds;
 
-                                   if (expected.bypass_A)
+                                   if(expected.rst)
                                     begin
+                                          expec_out = 0;
+                                            if(actual.out == expec_out)
+                                              returnn = 1;
+                                              else
+                                              returnn = 0;
                                          
-                                            if(actual.out == expected.A)
+                                    end
+                                  else if (expected.bypass_A)
+                                    begin
+                                          expec_out = expected.A;
+                                            if(actual.out == expec_out)
                                               returnn = 1;
                                               else
                                               returnn = 0;
@@ -82,61 +127,72 @@ package ALU_Score_Board;
                                     
                                     else if (expected.bypass_B)
                                     begin
-                                         
-                                            if(actual.out == expected.B)
+                                           expec_out = expected.B;
+                                            if(actual.out == expec_out)
                                               returnn = 1;
                                               else
                                               returnn = 0;
                                          
                                     end
 
-                                    else if ((expected.red_op_A) || (expected.red_op_B))
+                                    else
+                                    begin
+        
                                          if((expected.red_op_A))
-                                            if(expected.opcode != OR || expected.opcode != XOR)
+                                         begin
+                                            if(expected.opcode != OR && expected.opcode != XOR)
                                               begin
-                                                   if(actual.out == 0 && expected.leds == actual.leds)
+                                                expec_out = 0;
+                                                   if(actual.out == 0)
                                                     returnn = 1;
                                                     else
                                                     returnn = 0;
                                               end
                                             else if(expected.opcode == OR)
                                               begin
-                                                   if(actual.out == |expected.A)
+                                                  expec_out = |expected.A;
+                                                   if(actual.out == expec_out)
                                                     returnn =1;
                                                     else
                                                     returnn =0;
                                               end
-                                              else if(expected.opcode == XOR)
-                                              begin
-                                                   if(actual.out == ^expected.A)
+                                              else                     //if(expected.opcode == XOR)
+                                              begin 
+                                                   expec_out = ^expected.A;
+                                                   if(actual.out == expec_out)
                                                     returnn = 1;
                                                     else
                                                     returnn = 0;
                                               end
-                                              
-                                         if( (expected.red_op_B))
-                                            if(expected.opcode != OR || expected.opcode != XOR)
+                                           end
+
+                                        else if( (expected.red_op_B))
+                                         begin
+                                            if(expected.opcode != OR && expected.opcode != XOR)
                                               begin
-                                                   if(actual.out == 0 && expected.leds == actual.leds)
+                                                    expec_out = 0;
+                                                   if(actual.out == expec_out)
                                                     returnn = 1;
                                                     else
                                                    returnn = 0;
                                               end
                                             else if(expected.opcode == OR)
-                                              begin
-                                                   if(actual.out == |expected.B)
+                                              begin 
+                                                 expec_out = |expected.B;
+                                                   if(actual.out == expec_out)
                                                     returnn = 1;
                                                     else
                                                     returnn =0;
                                               end
-                                              else if(expected.opcode == XOR)
+                                              else //if(expected.opcode == XOR)
                                               begin
-                                                   if(actual.out == ^expected.B)
+                                                  expec_out = ^expected.B;
+                                                   if(actual.out == expec_out)
                                                     returnn = 1;
                                                     else
                                                     returnn =0;
                                               end
-                                              
+                                         end
                                      else
                                        begin
                                                 case (expected.opcode)
@@ -168,17 +224,10 @@ package ALU_Score_Board;
                                                                 else
                                                                 returnn = 0;
                                                          end
-                                                 OR: begin
-                                                        expec_out  = expected.B | expected.A;
-                                                            if(actual.out == expec_out)
-                                                                returnn =1;
-                                                                else
-                                                                returnn = 0;
-                                                         end
                                                 SHIFT: begin
                                                             if (expected.direction) 
-                                                            expec_out = {expected.out[4:0], expected.out};
-                                                            else expec_out = {expected.serial_in, expected.out[5:1]};
+                                                            expec_out = {expected.A[1:0], expected.serial_in};
+                                                            else expec_out = {expected.serial_in, expected.A[2:1]};
                                                             if(actual.out == expec_out)
                                                                 returnn = 1;
                                                                 else
@@ -186,22 +235,23 @@ package ALU_Score_Board;
                                                         end
                                                 ROTATE: begin
                                                             if (expected.direction) 
-                                                            expec_out = {expected.out[4:0], expected.out[5]};
-                                                            else expec_out = {expected.out[0], expected.out[5:1]};
+                                                            expec_out = {expected.A[1:0], expected.A[2]};
+                                                            else expec_out = {expected.A[0], expected.A[2:1]};
                                                             if(actual.out == expec_out)
                                                                 returnn = 1;
                                                                 else
                                                                 returnn =0;
                                                         end
                                                 default: begin
-                                                                if(actual.out == 0 && expected.leds == actual.leds)
+                                                                  expec_out = 0;
+                                                                if(actual.out == expec_out)
                                                                     returnn = 1;
                                                                     else
                                                                     returnn = 0;
                                                             end
                                                 endcase
+                                       end
                                         end
- 
                                     
                                  endtask 
 
@@ -211,12 +261,12 @@ package ALU_Score_Board;
                     task Score_Board_Report;
                         
                         $display("*************************************************");
-                        $display(" The Number OF Correct Operations = 0%d" ,Pass_Count );
+                        $display(" The Number OF Correct Operations =%0d at time ",Pass_Count,$time );
                         $display("*************************************************");
 
 
                         $display("*************************************************");
-                        $display(" The Number OF Failed Operations = 0%d" ,Error_Count );
+                        $display(" The Number OF Failed Operations =%0d at time ",Error_Count,$time );
                         $display("*************************************************");
 
 
@@ -224,4 +274,5 @@ package ALU_Score_Board;
                              
        endclass                            
     
-endpackage
+
+

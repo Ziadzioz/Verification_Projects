@@ -1,9 +1,6 @@
-package ALU_Monitor;
-      
-      ///////////////////////////// Importing required Packages
+        /////////////// Importing ALL Packages 
 
-    import ALU_Transction ::*;
-    import ALU_Coverage ::*;
+                import ALU_PACKAGE::*;
 
  //////////////////////////// Monitor Class
 
@@ -11,24 +8,23 @@ package ALU_Monitor;
             
             ////// Conecting the Monitor with the DUT in the Montior modport
                
-           
-               virtual ALU_IF MONITOR_IF;
+               virtual ALU_IF vif;
 
             /// Mail Box To send the Transaction Data From Monitor to Score Board
              
-               mailbox #(Transction) MON2SCB;
+               mailbox MON2SCB;
 
             ////      Defining an Coverage Object to sample the Data 
              
              Coverage cov;
               
-
+             
              /// Consructor
     
-                function new(mailbox #(Transction) MON2SCB, virtual ALU_IF MONITOR_IF);
+                function new(mailbox MON2SCB, virtual ALU_IF vif);
                         
                         this.MON2SCB = MON2SCB;   //// for passing this mail to the class one
-                        this.MONITOR_IF = MONITOR_IF;
+                        this.vif = vif;
                         this.cov = new();
 
                 endfunction 
@@ -42,24 +38,26 @@ package ALU_Monitor;
                                  
                              Transction tr_mon = new();
                                         
-                                        repeat(2) @(posedge MONITOR_IF.clk) ;           /////// Waiting 2 cycles one cause in rtl we sample the input and the output is reg
+                                   //     repeat(2) 
+                                    @(negedge vif.clk) ;           /////// Waiting 2 cycles one cause in rtl we sample the input and the output is reg
                                          ///////////////////// Sampling the Inputs
 
-                                            tr_mon.rst         = MONITOR_IF.rst;
-                                            tr_mon.serial_in   = MONITOR_IF.serial_in;
-                                            tr_mon.opcode      = MONITOR_IF.opcode;
-                                            tr_mon.direction   = MONITOR_IF.direction;
-                                            tr_mon.red_op_A    = MONITOR_IF.red_op_A;
-                                            tr_mon.red_op_B    = MONITOR_IF.red_op_B;
-                                            tr_mon.bypass_A    = MONITOR_IF.bypass_A;
-                                            tr_mon.bypass_B    = MONITOR_IF.bypass_B;
-                                            tr_mon.A           = MONITOR_IF.A;
-                                            tr_mon.B           = MONITOR_IF.B;
+                                            tr_mon.rst         = vif.rst;
+                                            tr_mon.serial_in   = vif.serial_in;
+                                            tr_mon.opcode      = vif.opcode;
+                                            tr_mon.direction   = vif.direction;
+                                            tr_mon.red_op_A    = vif.red_op_A;
+                                            tr_mon.red_op_B    = vif.red_op_B;
+                                            tr_mon.bypass_A    = vif.bypass_A;
+                                            tr_mon.bypass_B    = vif.bypass_B;
+                                            tr_mon.A           = vif.A;
+                                            tr_mon.B           = vif.B;
                                             
                                          ///////////////////// Sampling the Ouputs
-
-                                            tr_mon.out            = MONITOR_IF.out;
-                                            tr_mon.leds           = MONITOR_IF.leds;
+                                           
+                                        @(posedge vif.clk) ;
+                                            tr_mon.out            = vif.out;
+                                            tr_mon.leds           = vif.leds;
 
                                         ////////////   Passing tr_m to score board
                                            
@@ -75,4 +73,4 @@ package ALU_Monitor;
      
     endclass 
     
-endpackage
+
