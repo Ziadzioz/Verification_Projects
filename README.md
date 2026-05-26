@@ -59,23 +59,7 @@ text## Verification Achievements
 
 ## How to Run
 
-```bash
-# Compile all files
-vlog -sv *.sv
-
-# Simulate
-vsim -voptargs=+acc work.top
-Skills Demonstrated
-
-Advanced SystemVerilog OOP
-Constrained Randomization
-Functional Coverage & Cross Coverage
-Scoreboard Design
-Virtual Interfaces & Modports
-SystemVerilog Assertions (SVA)
-Testbench Architecture
-
-```
+do do.txt
 
 ## Contact
 zioza2002@gmail.com
